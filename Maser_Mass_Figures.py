@@ -9,7 +9,6 @@ for the Mass vs. Pr and magnitudes.
 
 import matplotlib.pyplot as plt
 import numpy as np
-import math
 
 #The velocity dispersion used as a constant to compare other velocity distributions
 v_constant = 200 # km/s
@@ -34,20 +33,24 @@ def Mass(v):
         The mass of the object based on velocity dispersion (in solar mass).
 
     """
-    #This variable is just an unecessary extra step to simply the mass equation
-    dummy_variable = alpha + beta * math.log(v/v_constant)
-    #The mass equation
-    mass = 10 ** dummy_variable # In solar mass
+    #The mass equation left in solar mass
+    mass = 10 ** alpha + (v/v_constant) ** beta
+    
     return mass
 
+#Import the data, Home computer
+#pr, w1, w2, w3, w4, v_disp = np.genfromtxt('C:/Users/eqpol/OneDrive/Documents/Class Work/GitHub/Astro_Lab_Work/MyTable_CrossDiffCoords_3arcsec_corrected.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
+#pr_nm, w1_nm, w2_nm, w3_nm, w4_nm, v_disp_nm = np.genfromtxt('C:/Users/eqpol/OneDrive/Documents/Class Work/Github/Astro_Lab_Work/MyTable_CrossDiffCoords_3arcsec_NM.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
+#Import the data, Lab computer
+pr, w1, w2, w3, w4, v_disp = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_3arcsec_corrected_POLLEYEQ.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
+pr_nm, w1_nm, w2_nm, w3_nm, w4_nm, v_disp_nm = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_3arcsec_NM_POLLEYEQ.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
 
-pr, w1, w2, w3, w4, v_disp = np.genfromtxt('C:/Users/eqpol/OneDrive/Documents/Class Work/GitHub/Astro_Lab_Work/MyTable_CrossDiffCoords_3arcsec_corrected.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
-
-
-masses = []
+#Iterate through the objects to creeate a list of masses
+masses_3m = []
+masses_3nm = []
 n = 0
-while n < len(v_disp):
-    masses.append(Mass(v_disp[n]))
-    n += 1
+for n in range(len(v_disp)):
+    masses_3m.append(Mass(v_disp[n])) #Added each mass to the list
+    masses_3nm.append(Mass(v_disp_nm[n]))
 
-print(len(v_disp), len(masses))
+
