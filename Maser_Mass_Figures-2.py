@@ -200,7 +200,9 @@ pr_nm, w1_nm, w2_nm, w3_nm, w4_nm, v_disp_nm = np.genfromtxt('C:/Users/eqpol/One
 """
 #Import the data, Lab computer
 pr, w1, w2, w3, w4, v_disp = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_8arcsec_POLLEYEQ.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
+masers = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_8arcsec_POLLEYEQ.csv', delimiter=',', unpack=True)
 pr_nm, w1_nm, w2_nm, w3_nm, w4_nm, v_disp_nm = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_8arcsec_NM_POLLEYEQ.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
+non_masers = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_8arcsec_NM_POLLEYEQ.csv', delimiter=',', unpack=True)
 
 #Iterate through the objects to creeate a list of masses
 masses_m = []
@@ -223,8 +225,8 @@ plt.legend(['Non-Masers', 'Masers'])
 plt.figure()
 fig, ax = plt.subplots(figsize = (10, 10))
 
-ax.hist(v_disp['your_column_here'],
-        #bins = np.linspace(v_disp['your_column_here'].min(), v_disp['your_column_here'].max(), num = 35, endpoint = False),
+ax.hist(masers['vdisp'],
+        bins = np.linspace(masers['vdisp'].min(), masers['vdisp'].max(), num = 35, endpoint = False),
         color = "green",
         edgecolor = 'white',
         density = True,
@@ -232,8 +234,8 @@ ax.hist(v_disp['your_column_here'],
         linewidth = 1,
         label = 'masers'
            ) 
-ax.hist(v_disp_nm['your_column_here'],
-        #bins = np.linspace(v_disp_nm['your_column_here'].min(), v_disp_nm['your_column_here'].max(), num = 35, endpoint = False),
+ax.hist(non_masers['vdisp'],
+        bins = np.linspace(non_masers['vdisp'].min(), non_masers['vdisp'].max(), num = 35, endpoint = False),
         color = "blue",
         edgecolor = 'white',
         density = True,
