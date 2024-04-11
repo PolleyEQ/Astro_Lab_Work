@@ -39,6 +39,31 @@ def Mass(v):
     return log_mass
 
 
+def exp_value(data):
+    """
+    This function is used to calculate the expectation value of a 
+    data set.
+
+    Parameters
+    ----------
+    data : list
+        A list of values.
+
+    Returns
+    -------
+    value : float
+        The expectation value of the dataset.
+
+    """
+    x = 0
+    for i in data:
+        x += i
+    
+    y = len(data)
+    value = x / y
+    return value
+
+
 #%% 3arcseconds
 
 """#Import the data, Home computer
@@ -505,9 +530,27 @@ print('Sample size for non-masers is', ss_nm,
       '\nSamples with velocity dispersions for masers is', len(v_disp))
 
 #Expectation value of velocity dispersion
+print('The expected value of velocity dispersion for non-masers is', exp_value(v_disp_nm),
+      '\nThe expected value of velocity dispersion for masers is', exp_value(v_disp))
 
+#Expectation value of mass of black hole
+print('The expected value of the mass of black hole for non-masers is', exp_value(masses_nm),
+      '\nThe expected value of the mass of black hole for masers is', exp_value(masses_m))
 
-#Epectation value of Mass of black hole
+#Expectation value of mass of black hole, with pr > .75
 
+pr_masses_m = []
+pr_masses_nm = []
+for i in pr:
+    if i > .75:
+        index = pr.index(i)
+        pr_masses_m.append(masses_m[index])
+for i in pr_nm:
+    if i > .75:
+        index = pr_nm.index(i)
+        pr_masses_nm.append(masses_nm[index])
+        
+print('The expected value of the mass of black hole, with PR > .75, for non-masers is', exp_value(pr_masses_m),
+      '\nThe expected value of the mass of black hole, with PR > .75, for masers is', exp_value(pr_masses_nm))
 
 
