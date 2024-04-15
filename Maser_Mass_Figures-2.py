@@ -106,6 +106,7 @@ for n in range(len(v_disp)): #Iterate over all velocities for masers
 for n in range(len(v_disp_nm)): #Iterate over all velocities for non-masers
     masses_nm.append(Mass(v_disp_nm[n])) #Add each mass to the non-maser list
 
+#Create a new list for the magnitudes minus one another (w1-w2)
 w12 = []
 w12_nm = []
 for i in range(len(v_disp)):
@@ -113,14 +114,15 @@ for i in range(len(v_disp)):
 for i in range(len(v_disp_nm)):
     w12_nm.append(w1_nm[i] - w2_nm[i])
 
+#Plot the scatter plot with non-masers, masers, mega and disk masers
 plt.figure(num = None)
 fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize = (12, 6), sharey = True)
 
-ax1.scatter(pr_nm, masses_nm, color = 'grey')
+ax1.scatter(pr_nm, masses_nm, color = 'grey') #Against pr
 ax1.scatter(pr, masses_m, color = 'blue')
 ax1.set_ylabel('Mass (in solar masses)')
 ax1.set_xlabel('PR')
-ax2.scatter(w1_nm, masses_nm, color = 'grey')
+ax2.scatter(w1_nm, masses_nm, color = 'grey') #Against maginitudes
 ax2.scatter(w1, masses_m, color = 'blue')
 ax2.set_xlabel('W1')
 ax3.scatter(w2_nm, masses_nm, color = 'grey')
@@ -128,7 +130,7 @@ ax3.scatter(w2, masses_m, color = 'blue')
 ax3.set_xlabel('W2')
 ax4.scatter(w12_nm, masses_nm, color = 'grey')
 ax4.scatter(w12, masses_m, color = 'blue')
-ax4.set_xlabel('W1 - W2')
+ax4.set_xlabel('W1 - W2') #Against compared magnitudes
 ax1.legend(['Masers', 'Non-masers'])
 plt.tight_layout()
 plt.show()
@@ -492,9 +494,27 @@ plt.show()
 
 #%% Histogram of velocity dispersion (sigma *)
 
+#Creating new list that contain values of pr > .75
+v_disp_pr = []
+v_disp_pr_nm = []
+for i in pr:
+    if i > .75:
+        index = pr.index(i)
+        x = v_disp[index]
+        v_disp_pr.append(x)
+for i in pr_nm:
+    if i > .75:
+        index = pr_nm.index(i)
+        x = v_disp_nm[index]
+        v_disp_pr_nm.append(x)
+
+#Convert lists into arrays for graphing in histogram
 v_disp = np.array(v_disp)
 v_disp_nm = np.array(v_disp_nm)
+v_disp_pr = np.array(v_disp_pr)
+v_disp_pr_nm = np.array(v_disp_pr_nm)
 
+#Histogram graph
 plt.figure()
 fig, ax = plt.subplots(figsize = (10, 10))
 
@@ -509,6 +529,32 @@ ax.hist(v_disp,
            ) 
 ax.hist(v_disp_nm,
         bins = np.linspace(v_disp_nm.min(), v_disp_nm.max(), num = 35, endpoint = False),
+        color = "blue",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'non-masers'
+           )
+
+plt.legend(['Masers', 'Non-masers'])
+
+plt.show()
+
+plt.figure()
+fig, ax = plt.subplots(figsize = (10, 10))
+
+ax.hist(v_disp_pr,
+        bins = np.linspace(v_disp_pr.min(), v_disp_pr.max(), num = 35, endpoint = False),
+        color = "green",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'masers'
+           ) 
+ax.hist(v_disp_pr_nm,
+        bins = np.linspace(v_disp_pr_nm.min(), v_disp_pr_nm.max(), num = 35, endpoint = False),
         color = "blue",
         edgecolor = 'white',
         density = True,
@@ -552,5 +598,3 @@ for i in pr_nm:
         
 print('The expected value of the mass of black hole, with PR > .75, for non-masers is', exp_value(pr_masses_m),
       '\nThe expected value of the mass of black hole, with PR > .75, for masers is', exp_value(pr_masses_nm))
-
-
