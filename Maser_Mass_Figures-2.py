@@ -799,6 +799,17 @@ for n in range(len(v_disp_mega_masers)):
 for n in range(len(v_disp_disk_masers)):
     masses_disk_masers.append(Mass(v_disp_disk_masers[n]))
 
+for i in masses_nm:
+    if i < 0:
+        index = masses_nm.index(i)
+        masses_nm.remove(i)
+        pr_nm.pop(index)
+        w1_nm.pop(index)
+        w2_nm.pop(index)
+        w3_nm.pop(index)
+        w4_nm.pop(index)
+        v_disp_nm.pop(index)
+
 #Create a new list for the magnitudes minus one another (w1-w2)
 w12 = []
 w12_nm = []
@@ -992,8 +1003,8 @@ print('The expected value of velocity dispersion for non-masers is', exp_value(v
 #Expectation value of mass of black hole
 print('The expected value of the mass of black hole for non-masers is', exp_value(masses_nm),
       '\nThe expected value of the mass of black hole for masers is', exp_value(masses_m),
-      '\nThe expected value of the mass of black hole for mega masers is', exp_value(masses_m),
-      '\nThe expected value of the mass of black hole for disk masers is', exp_value(masses_m)
+      '\nThe expected value of the mass of black hole for mega masers is', exp_value(masses_mega_masers),
+      '\nThe expected value of the mass of black hole for disk masers is', exp_value(masses_disk_masers)
       )
 
 #Expectation value of mass of black hole, with pr > .75
