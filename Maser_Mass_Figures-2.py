@@ -881,6 +881,28 @@ for i in pr_nm:
         x = v_disp_nm[index]
         v_disp_pr_nm.append(x)
 
+masses_m_pr = []
+masses_nm_pr = []
+masses_mega_masers_pr = []
+masses_disk_masers_pr = []
+for i in pr:
+    if i > .75:
+        index = pr.index(i)
+        masses_m_pr.append(masses_m[index])
+for i in pr_nm:
+    if i > .75:
+        index = pr_nm.index(i)
+        masses_nm_pr.append(masses_nm[index])
+for i in pr_mega_masers:
+    if i > .75:
+        index = pr_mega_masers.index(i)
+        masses_mega_masers_pr.append(masses_mega_masers[index])
+for i in pr_disk_masers:
+    if i > .75:
+        index = pr_disk_masers.index(i)
+        masses_disk_masers_pr.append(masses_disk_masers[index])
+
+
 #Convert lists into arrays for graphing in histogram
 v_disp = np.array(v_disp)
 v_disp_nm = np.array(v_disp_nm)
@@ -890,6 +912,14 @@ v_disp_pr = np.array(v_disp_pr)
 v_disp_pr_nm = np.array(v_disp_pr_nm)
 v_disp_pr_mega_masers = np.array(v_disp_pr_mega_masers)
 v_disp_pr_disk_masers = np.array(v_disp_pr_disk_masers)
+masses_m = np.array(masses_m)
+masses_nm = np.array(masses_nm)
+masses_mega_masers = np.array(masses_mega_masers)
+masses_disk_masers = np.array(masses_disk_masers)
+masses_m_pr = np.array(masses_m_pr)
+masses_nm_pr = np.array(masses_nm_pr)
+masses_mega_masers_pr = np.array(masses_mega_masers_pr)
+masses_disk_masers_pr = np.array(masses_disk_masers_pr)
 
 #Histogram graph
 plt.figure()
@@ -980,6 +1010,93 @@ plt.legend(['Non-masers', 'Masers', 'Mega-masers', 'Disk masers'])
 
 plt.show()
 
+plt.figure()
+fig, ax = plt.subplots(figsize = (10, 10))
+
+ax.hist(masses_nm,
+        bins = np.linspace(masses_nm.min(), masses_nm.max(), num = 35, endpoint = False),
+        color = "gray",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'non-masers'
+           ) 
+ax.hist(masses_m,
+        bins = np.linspace(masses_m.min(), masses_m.max(), num = 35, endpoint = False),
+        color = "blue",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'masers'
+           )
+ax.hist(masses_mega_masers,
+        bins = np.linspace(masses_mega_masers.min(), masses_mega_masers.max(), num = 35, endpoint = False),
+        color = "green",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'mega-masers'
+           )
+ax.hist(masses_disk_masers,
+        bins = np.linspace(masses_disk_masers.min(), masses_disk_masers.max(), num = 35, endpoint = False),
+        color = "purple",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'disk-masers'
+           )
+
+plt.legend(['Non-masers', 'Masers', 'Mega-masers', 'Disk masers'])
+
+plt.show()
+
+plt.figure()
+fig, ax = plt.subplots(figsize = (10, 10))
+
+ax.hist(masses_nm_pr,
+        bins = np.linspace(masses_nm_pr.min(), masses_nm_pr.max(), num = 35, endpoint = False),
+        color = "gray",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'non-masers'
+           ) 
+ax.hist(masses_m_pr,
+        bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = 35, endpoint = False),
+        color = "blue",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'masers'
+           )
+ax.hist(masses_mega_masers_pr,
+        bins = np.linspace(masses_mega_masers_pr.min(), masses_mega_masers_pr.max(), num = 35, endpoint = False),
+        color = "green",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'mega-masers'
+           )
+ax.hist(masses_disk_masers_pr,
+        bins = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num = 35, endpoint = False),
+        color = "purple",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'disk-masers'
+           )
+
+plt.legend(['Non-masers', 'Masers', 'Mega-masers', 'Disk masers'])
+
+plt.show()
 
 #%% Values for slide show
 
@@ -1007,30 +1124,9 @@ print('The expected value of the mass of black hole for non-masers is', exp_valu
       '\nThe expected value of the mass of black hole for disk masers is', exp_value(masses_disk_masers)
       )
 
-#Expectation value of mass of black hole, with pr > .75
-pr_masses_m = []
-pr_masses_nm = []
-pr_masses_mega_masers = []
-pr_masses_disk_masers = []
-for i in pr:
-    if i > .75:
-        index = pr.index(i)
-        pr_masses_m.append(masses_m[index])
-for i in pr_nm:
-    if i > .75:
-        index = pr_nm.index(i)
-        pr_masses_nm.append(masses_nm[index])
-for i in pr_mega_masers:
-    if i > .75:
-        index = pr_mega_masers.index(i)
-        pr_masses_mega_masers.append(masses_mega_masers[index])
-for i in pr_disk_masers:
-    if i > .75:
-        index = pr_disk_masers.index(i)
-        pr_masses_disk_masers.append(masses_disk_masers[index])
-        
-print('The expected value of the mass of black hole, with PR > .75, for non-masers is', exp_value(pr_masses_m),
-      '\nThe expected value of the mass of black hole, with PR > .75, for masers is', exp_value(pr_masses_nm),
-      '\nThe expected value of the mass of black hole, with PR > .75, for mega masers is', exp_value(pr_masses_mega_masers),
-      '\nThe expected value of the mass of black hole, with PR > .75, for disk masers is', exp_value(pr_masses_disk_masers)
+#Expectation value of mass of black hole, with pr > .75        
+print('The expected value of the mass of black hole, with PR > .75, for non-masers is', exp_value(masses_nm_pr),
+      '\nThe expected value of the mass of black hole, with PR > .75, for masers is', exp_value(masses_m_pr),
+      '\nThe expected value of the mass of black hole, with PR > .75, for mega masers is', exp_value(masses_mega_masers_pr),
+      '\nThe expected value of the mass of black hole, with PR > .75, for disk masers is', exp_value(masses_disk_masers_pr)
       )
