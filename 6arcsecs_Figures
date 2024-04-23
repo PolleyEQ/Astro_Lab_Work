@@ -303,8 +303,13 @@ masses_disk_masers_pr = np.array(masses_disk_masers_pr)
 plt.figure()
 fig, ax = plt.subplots(figsize = (10, 10))
 
+num_bins_nm = min(35, len(masses_nm_pr))
+num_bins_m = min(35, len(masses_m_pr))
+num_bins_mega = min(15, len(masses_mega_masers_pr))
+num_bins_disk = min(5, len(masses_disk_masers_pr))
+
 ax.hist(masses_nm,
-        bins = np.linspace(masses_nm.min(), masses_nm.max(), num = 35, endpoint = False),
+        bins = np.linspace(masses_nm.min(), masses_nm.max(), num = num_bins_nm),
         color = "gray",
         edgecolor = 'white',
         density = True,
@@ -313,7 +318,7 @@ ax.hist(masses_nm,
         label = 'non-masers'
            ) 
 ax.hist(masses_m,
-        bins = np.linspace(masses_m.min(), masses_m.max(), num = 35, endpoint = False),
+        bins = np.linspace(masses_m.min(), masses_m.max(), num = num_bins_m),
         color = "blue",
         edgecolor = 'white',
         density = True,
@@ -322,7 +327,7 @@ ax.hist(masses_m,
         label = 'masers'
            )
 ax.hist(masses_mega_masers,
-        bins = np.linspace(masses_mega_masers.min(), masses_mega_masers.max(), num = 20, endpoint = False),
+        bins = np.linspace(masses_mega_masers.min(), masses_mega_masers.max(), num = num_bins_mega),
         color = "green",
         edgecolor = 'white',
         density = True,
@@ -331,7 +336,7 @@ ax.hist(masses_mega_masers,
         label = 'mega-masers'
            )
 ax.hist(masses_disk_masers,
-        bins = np.linspace(masses_disk_masers.min(), masses_disk_masers.max(), num = 2, endpoint = False),
+        bins = np.linspace(masses_disk_masers.min(), masses_disk_masers.max(), num = num_bins_disk),
         color = "purple",
         edgecolor = 'white',
         density = True,
@@ -349,7 +354,7 @@ plt.figure()
 fig, ax = plt.subplots(figsize = (10, 10))
 
 ax.hist(masses_nm_pr,
-        bins = np.linspace(masses_nm_pr.min(), masses_nm_pr.max(), num = 35, endpoint = False),
+        bins = np.linspace(masses_nm_pr.min(), masses_nm_pr.max(), num = num_bins_nm),
         color = "gray",
         edgecolor = 'white',
         density = True,
@@ -358,7 +363,7 @@ ax.hist(masses_nm_pr,
         label = 'non-masers'
            ) 
 ax.hist(masses_m_pr,
-        bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = 35, endpoint = False),
+        bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = num_bins_m),
         color = "blue",
         edgecolor = 'white',
         density = True,
@@ -367,7 +372,7 @@ ax.hist(masses_m_pr,
         label = 'masers'
            )
 ax.hist(masses_mega_masers_pr,
-        bins = np.linspace(masses_mega_masers_pr.min(), masses_mega_masers_pr.max(), num = 20, endpoint = False),
+        bins = np.linspace(masses_mega_masers_pr.min(), masses_mega_masers_pr.max(), num = num_bins_mega),
         color = "green",
         edgecolor = 'white',
         density = True,
@@ -376,7 +381,7 @@ ax.hist(masses_mega_masers_pr,
         label = 'mega-masers'
            )
 ax.hist(masses_disk_masers_pr,
-        bins = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num = 5, endpoint = False),
+        bins = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num = num_bins_disk),
         color = "purple",
         edgecolor = 'white',
         density = True,
