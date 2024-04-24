@@ -27,6 +27,26 @@ for i in v_disp_nm:
         w3_nm.pop(zero)
         w4_nm.pop(zero)
         
+        
+#Disk Masers
+disk_masers = []
+pr_disk_masers = []
+v_disp_disk_masers = []
+w1_disk_masers = []
+w2_disk_masers = []
+w3_disk_masers = []
+w4_disk_masers = []
+for i in range(len(ob_class)):
+    if ob_class[i] == 1 or ob_class[i] == 11 or ob_class[i] == 12 or ob_class == 13:
+        disk_masers.append(Mass(v_disp[i]))
+        pr_disk_masers.append(pr[i])
+        v_disp_disk_masers.append(v_disp[i])
+        w1_disk_masers.append(w1[i])
+        w2_disk_masers.append(w2[i])
+        w3_disk_masers.append(w3[i])
+        w4_disk_masers.append(w4[i])
+        
+
 #Megamasers
 mega_masers = []
 v_disp_mega_masers = []
@@ -46,25 +66,19 @@ for i in lum:
         w3_mega_masers.append(w3[index])
         w4_mega_masers.append(w4[index])
         
-        
-#Disk Masers
-disk_masers = []
-pr_disk_masers = []
-v_disp_disk_masers = []
-w1_disk_masers = []
-w2_disk_masers = []
-w3_disk_masers = []
-w4_disk_masers = []
-for i in range(len(ob_class)):
-    if ob_class[i] == 1:
-        disk_masers.append(Mass(v_disp[i]))
-        pr_disk_masers.append(pr[i])
-        v_disp_disk_masers.append(v_disp[i])
-        w1_disk_masers.append(w1[i])
-        w2_disk_masers.append(w2[i])
-        w3_disk_masers.append(w3[i])
-        w4_disk_masers.append(w4[i])
-        
+"""for i in v_disp:
+    for j in v_disp_disk_masers:
+        if i == j:
+            zero = v_disp.index(i)
+            v_disp.remove(i)
+            pr.pop(zero)
+            w1.pop(zero)
+            w2.pop(zero)
+            w3.pop(zero)
+            w4.pop(zero)
+            lum.pop(zero)
+            ob_class.pop(zero)"""
+             
 
 #Iterate through the objects to creeate a list of masses
 masses_m = []
@@ -321,7 +335,6 @@ ax.hist(masses_disk_masers,
         linewidth = 1,
         label = 'disk-masers'
            )
-plt.scatter(masses_disk_masers, np.zeros_like(masses_disk_masers), color="purple", label='Disk-masers')
 
 plt.legend(['Non-masers', 'Masers', 'Mega-masers', 'Disk masers'])
 
@@ -335,7 +348,7 @@ ax.hist(masses_nm_pr,
         bins = np.linspace(masses_nm_pr.min(), masses_nm_pr.max(), num = num_bins, endpoint = False),
         color = "gray",
         edgecolor = 'white',
-        density = False,
+        density = True,
         alpha = 0.6,
         linewidth = 1,
         label = 'non-masers',
@@ -345,7 +358,28 @@ ax.hist(masses_m_pr,
         bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = num_bins, endpoint = False),
         color = "blue",
         edgecolor = 'white',
-        density = False,
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'masers',
+        weights=np.ones_like(masses_m_pr) / len(masses_m_pr)
+           )
+
+plt.legend(['Non-masers', 'Masers'])
+
+plt.xlabel('Mass')
+
+
+plt.show()
+
+plt.figure()
+fig, ax = plt.subplots(figsize = (10, 10))
+
+ax.hist(masses_m_pr,
+        bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = num_bins, endpoint = False),
+        color = "blue",
+        edgecolor = 'white',
+        density = True,
         alpha = 0.6,
         linewidth = 1,
         label = 'masers',
@@ -355,7 +389,7 @@ ax.hist(masses_mega_masers_pr,
         bins = np.linspace(masses_mega_masers_pr.min(), masses_mega_masers_pr.max(), num = num_bins, endpoint = False),
         color = "green",
         edgecolor = 'white',
-        density = False,
+        density = True,
         alpha = 0.6,
         linewidth = 1,
         label = 'mega-masers',
@@ -365,15 +399,15 @@ ax.hist(masses_disk_masers_pr,
         bins = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num = num_bins, endpoint = False),
         color = "purple",
         edgecolor = 'white',
-        density = False,
+        density = True,
         alpha = 0.6,
         linewidth = 1,
         label = 'disk-masers',
         weights=np.ones_like(masses_disk_masers_pr) / len(masses_disk_masers_pr)
            )
-plt.scatter(masses_disk_masers_pr, np.zeros_like(masses_disk_masers_pr), color="purple", label='Disk-masers')
 
-plt.legend(['Non-masers', 'Masers', 'Mega-masers', 'Disk masers'])
+
+plt.legend(['Masers', 'Mega-masers', 'Disk masers'])
 
 plt.xlabel('Mass')
 
@@ -413,3 +447,56 @@ print('The expected value of the mass of black hole, with PR > .75, for non-mase
       '\nThe expected value of the mass of black hole, with PR > .75, for mega masers is', exp_value(masses_mega_masers_pr),
       '\nThe expected value of the mass of black hole, with PR > .75, for disk masers is', exp_value(masses_disk_masers_pr)
       )
+
+plt.figure()
+fig, ax = plt.subplots(figsize = (10, 10))
+
+ax.hist(masses_m_pr,
+        bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = num_bins, endpoint = False),
+        color = "blue",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'masers',
+        weights=np.ones_like(masses_m_pr) / len(masses_m_pr)
+           )
+ax.hist(masses_mega_masers_pr,
+        bins = np.linspace(masses_mega_masers_pr.min(), masses_mega_masers_pr.max(), num = num_bins, endpoint = False),
+        color = "green",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'mega-masers',
+        weights=np.ones_like(masses_mega_masers_pr) / len(masses_mega_masers_pr)
+           )
+# Calculate the number of bins using Freedman-Diaconis rule
+iqr = np.percentile(masses_disk_masers_pr, 75) - np.percentile(masses_disk_masers_pr, 25)
+bin_width_fd = 2 * iqr / (len(masses_disk_masers_pr) ** (1/3))
+num_bins_fd = int((masses_disk_masers_pr.max() - masses_disk_masers_pr.min()) / bin_width_fd)
+
+# Generate bin edges based on Freedman-Diaconis rule
+bin_edges_fd = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num_bins_fd+5)
+
+# Plot the histogram with Freedman-Diaconis rule bin edges
+ax.hist(masses_disk_masers_pr, bins=bin_edges_fd, color="purple", edgecolor='white', density=True,
+        alpha=0.6, linewidth=1, label='disk-masers')
+
+"""ax.hist(masses_disk_masers_pr,
+        bins = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num = num_bins, endpoint = False),
+        color = "purple",
+        edgecolor = 'white',
+        density = True,
+        alpha = 0.6,
+        linewidth = 1,
+        label = 'disk-masers',
+        weights=np.ones_like(masses_disk_masers_pr) / len(masses_disk_masers_pr)
+           )"""
+
+
+plt.legend(['Masers', 'Mega-masers', 'Disk masers'])
+
+plt.xlabel('Mass')
+
+plt.show()
