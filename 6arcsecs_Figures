@@ -1,82 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Author: Ethan Polley
-Version: 3/21/24
-
-To run computation on Garching data & create figures
-for the Mass vs. Pr and magnitudes.
-"""
-
-import matplotlib.pyplot as plt
-import numpy as np
-
-#The velocity dispersion used as a constant to compare other velocity distributions
-v_constant = 200 # km/s
-#Alpha and Beta are the fit and slope respectively, set to current model use
-alpha = 8.13 # +/- .06
-beta = 4.02 # +/- .43
-
-def Mass(v):
-    """
-    This function is used to calculate the mass of all objects in
-    the dataset. This is done using the velocity dispersion and
-    the relationshiop between the two.
-
-    Parameters
-    ----------
-    v : float
-        The velocity dispersion of the object being measured.
-
-    Returns
-    -------
-    mass : float
-        The mass of the object based on velocity dispersion (in solar mass).
-
-    """
-    #The mass equation left in solar mass
-    log_mass = alpha + beta * np.log10(v/v_constant)
-    
-    return log_mass
-
-
-def exp_value(data):
-    """
-    This function is used to calculate the expectation value of a 
-    data set.
-
-    Parameters
-    ----------
-    data : list
-        A list of values.
-
-    Returns
-    -------
-    value : float
-        The expectation value of the dataset.
-
-    """
-    x = 0
-    for i in data:
-        x += i
-    
-    y = len(data)
-    value = x / y
-    return value
-
-
-
-
-
-#%% 6arcseconds
-
-"""#Import the data, Home computer
-pr, w1, w2, w3, w4, v_disp = np.genfromtxt('C:/Users/eqpol/OneDrive/Documents/Class Work/GitHub/Astro_Lab_Work/MyTable_CrossDiffCoords_3arcsec_corrected.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
-pr_nm, w1_nm, w2_nm, w3_nm, w4_nm, v_disp_nm = np.genfromtxt('C:/Users/eqpol/OneDrive/Documents/Class Work/Github/Astro_Lab_Work/MyTable_CrossDiffCoords_3arcsec_NM.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
-"""
-#Import the data, Lab computer
-pr, w1, w2, w3, w4, v_disp, lum, ob_class = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_6arcsec_POLLEYEQ.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7,-3,-2,-1), unpack=True)
-pr_nm, w1_nm, w2_nm, w3_nm, w4_nm, v_disp_nm = np.genfromtxt('/Users/ethanpolley/Downloads/MyTable_CrossDiffCoords_6arcsec_NM_POLLEYEQ.csv', delimiter=',', skip_header=1, usecols=(1,4,5,6,7, -1), unpack=True)
-
 #Sample sizes
 ss_nm = len(v_disp_nm)
 ss_m = len(v_disp)
@@ -202,6 +123,59 @@ for i in range(len(w1_mega_masers)):
     w12_mega_masers.append(w1_mega_masers[i] - w2_mega_masers[i])
 for i in range(len(w1_disk_masers)):
     w12_disk_masers.append(w1_disk_masers[i] - w2_disk_masers[i])
+    
+#Masses for Variability
+masses_m_pr = []
+w1_pr = []
+w2_pr = []
+masses_nm_pr = []
+w1_nm_pr = []
+w2_nm_pr = []
+masses_mega_masers_pr = []
+w1_mega_pr = []
+w2_mega_pr = []
+masses_disk_masers_pr = []
+w1_disk_pr = []
+w2_disk_pr = []
+for i in pr:
+    if i > .75:
+        index = pr.index(i)
+        masses_m_pr.append(masses_m[index])
+        w1_pr.append(w1[index])
+        w2_pr.append(w2[index])
+for i in pr_nm:
+    if i > .75:
+        index = pr_nm.index(i)
+        masses_nm_pr.append(masses_nm[index])
+        w1_nm_pr.append(w1_nm[index])
+        w2_nm_pr.append(w2_nm[index])
+for i in pr_mega_masers:
+    if i > .75:
+        index = pr_mega_masers.index(i)
+        masses_mega_masers_pr.append(masses_mega_masers[index])
+        w1_mega_pr.append(w1_mega_masers[index])
+        w2_mega_pr.append(w2_mega_masers[index])
+for i in pr_disk_masers:
+    if i > .75:
+        index = pr_disk_masers.index(i)
+        masses_disk_masers_pr.append(masses_disk_masers[index])
+        w1_disk_pr.append(w1_disk_masers[index])
+        w2_disk_pr.append(w2_disk_masers[index])
+
+
+w12_pr = []
+w12_nm_pr = []
+w12_mega_pr = []
+w12_disk_pr = []
+for i in range(len(masses_m_pr)):
+    w12_pr.append(w1_pr[i] - w2_pr[i])
+for i in range(len(masses_nm_pr)):
+    w12_nm_pr.append(w1_nm_pr[i] - w2_nm_pr[i])
+for i in range(len(masses_mega_masers_pr)):
+    w12_mega_pr.append(w1_mega_pr[i] - w2_mega_pr[i])
+for i in range(len(masses_disk_masers_pr)):
+    w12_disk_pr.append(w1_disk_pr[i] - w2_disk_pr[i])
+
 
 #Plot the scatter plot with non-masers, masers, mega and disk masers
 plt.figure(num = None)
@@ -209,25 +183,48 @@ fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize = (12, 6), sharey = True)
 
 ax1.scatter(pr_nm, masses_nm, color = 'grey') #Against pr
 ax1.scatter(pr, masses_m, color = 'blue')
-ax1.scatter(pr_mega_masers, mega_masers, color = 'green')
-ax1.scatter(pr_disk_masers, disk_masers, color = 'purple')
+ax1.scatter(pr_mega_masers, masses_mega_masers, color = 'green')
+ax1.scatter(pr_disk_masers, masses_disk_masers, color = 'purple')
 ax1.set_ylabel(r'$Log(M_{BH})$')
 ax1.set_xlabel('PR')
 ax2.scatter(w1_nm, masses_nm, color = 'grey') #Against maginitudes
 ax2.scatter(w1, masses_m, color = 'blue')
-ax2.scatter(w1_mega_masers, mega_masers, color = 'green')
-ax2.scatter(w1_disk_masers, disk_masers, color = 'purple')
+ax2.scatter(w1_mega_masers, masses_mega_masers, color = 'green')
+ax2.scatter(w1_disk_masers, masses_disk_masers, color = 'purple')
 ax2.set_xlabel('W1')
 ax3.scatter(w2_nm, masses_nm, color = 'grey')
 ax3.scatter(w2, masses_m, color = 'blue')
-ax3.scatter(w2_mega_masers, mega_masers, color = 'green')
-ax3.scatter(w2_disk_masers, disk_masers, color = 'purple')
+ax3.scatter(w2_mega_masers, masses_mega_masers, color = 'green')
+ax3.scatter(w2_disk_masers, masses_disk_masers, color = 'purple')
 ax3.set_xlabel('W2')
 ax4.scatter(w12_nm, masses_nm, color = 'grey')
 ax4.scatter(w12, masses_m, color = 'blue')
-ax4.scatter(w12_mega_masers, mega_masers, color = 'green')
-ax4.scatter(w12_disk_masers, disk_masers, color = 'purple')
+ax4.scatter(w12_mega_masers, masses_mega_masers, color = 'green')
+ax4.scatter(w12_disk_masers, masses_disk_masers, color = 'purple')
 ax4.set_xlabel('W1 - W2') #Against compared magnitudes
+ax1.legend(['Non-masers', 'Masers', 'Mega masers', 'Disk masers'])
+plt.tight_layout()
+plt.show()
+
+plt.figure(num = None)
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize = (12, 6), sharey = True)
+
+ax1.set_ylabel(r'$Log(M_{BH})$')
+ax1.scatter(w1_nm_pr, masses_nm_pr, color = 'grey') #Against maginitudes
+ax1.scatter(w1_pr, masses_m_pr, color = 'blue')
+ax1.scatter(w1_mega_pr, masses_mega_masers_pr, color = 'green')
+ax1.scatter(w1_disk_pr, masses_disk_masers_pr, color = 'purple')
+ax1.set_xlabel('W1')
+ax2.scatter(w2_nm_pr, masses_nm_pr, color = 'grey')
+ax2.scatter(w2_pr, masses_m_pr, color = 'blue')
+ax2.scatter(w2_mega_pr, masses_mega_masers_pr, color = 'green')
+ax2.scatter(w2_disk_pr, masses_disk_masers_pr, color = 'purple')
+ax2.set_xlabel('W2')
+ax3.scatter(w12_nm_pr, masses_nm_pr, color = 'grey')
+ax3.scatter(w12_pr, masses_m_pr, color = 'blue')
+ax3.scatter(w12_mega_pr, masses_mega_masers_pr, color = 'green')
+ax3.scatter(w12_disk_pr, masses_disk_masers_pr, color = 'purple')
+ax3.set_xlabel('W1 - W2') #Against compared magnitudes
 ax1.legend(['Non-masers', 'Masers', 'Mega masers', 'Disk masers'])
 plt.tight_layout()
 plt.show()
@@ -258,27 +255,6 @@ for i in pr_nm:
         x = v_disp_nm[index]
         v_disp_pr_nm.append(x)
 
-masses_m_pr = []
-masses_nm_pr = []
-masses_mega_masers_pr = []
-masses_disk_masers_pr = []
-for i in pr:
-    if i > .75:
-        index = pr.index(i)
-        masses_m_pr.append(masses_m[index])
-for i in pr_nm:
-    if i > .75:
-        index = pr_nm.index(i)
-        masses_nm_pr.append(masses_nm[index])
-for i in pr_mega_masers:
-    if i > .75:
-        index = pr_mega_masers.index(i)
-        masses_mega_masers_pr.append(masses_mega_masers[index])
-for i in pr_disk_masers:
-    if i > .75:
-        index = pr_disk_masers.index(i)
-        masses_disk_masers_pr.append(masses_disk_masers[index])
-
 
 #Convert lists into arrays for graphing in histogram
 v_disp = np.array(v_disp)
@@ -302,14 +278,15 @@ masses_disk_masers_pr = np.array(masses_disk_masers_pr)
 #Histogram graph
 plt.figure()
 fig, ax = plt.subplots(figsize = (10, 10))
-
-num_bins_nm = min(35, len(masses_nm_pr))
-num_bins_m = min(35, len(masses_m_pr))
+"""
+num_bins_nm = min(15, len(masses_nm_pr))
+num_bins_m = min(15, len(masses_m_pr))
 num_bins_mega = min(15, len(masses_mega_masers_pr))
-num_bins_disk = min(5, len(masses_disk_masers_pr))
-
+num_bins_disk = min(15, len(masses_disk_masers_pr))
+"""
+num_bins = 15
 ax.hist(masses_nm,
-        bins = np.linspace(masses_nm.min(), masses_nm.max(), num = num_bins_nm),
+        bins = np.linspace(masses_nm.min(), masses_nm.max(), num = num_bins, endpoint = False),
         color = "gray",
         edgecolor = 'white',
         density = True,
@@ -318,7 +295,7 @@ ax.hist(masses_nm,
         label = 'non-masers'
            ) 
 ax.hist(masses_m,
-        bins = np.linspace(masses_m.min(), masses_m.max(), num = num_bins_m),
+        bins = np.linspace(masses_m.min(), masses_m.max(), num = num_bins, endpoint = False),
         color = "blue",
         edgecolor = 'white',
         density = True,
@@ -327,7 +304,7 @@ ax.hist(masses_m,
         label = 'masers'
            )
 ax.hist(masses_mega_masers,
-        bins = np.linspace(masses_mega_masers.min(), masses_mega_masers.max(), num = num_bins_mega),
+        bins = np.linspace(masses_mega_masers.min(), masses_mega_masers.max(), num = num_bins, endpoint = False),
         color = "green",
         edgecolor = 'white',
         density = True,
@@ -336,7 +313,7 @@ ax.hist(masses_mega_masers,
         label = 'mega-masers'
            )
 ax.hist(masses_disk_masers,
-        bins = np.linspace(masses_disk_masers.min(), masses_disk_masers.max(), num = num_bins_disk),
+        bins = np.linspace(masses_disk_masers.min(), masses_disk_masers.max(), num = num_bins, endpoint = False),
         color = "purple",
         edgecolor = 'white',
         density = True,
@@ -344,6 +321,7 @@ ax.hist(masses_disk_masers,
         linewidth = 1,
         label = 'disk-masers'
            )
+plt.scatter(masses_disk_masers, np.zeros_like(masses_disk_masers), color="purple", label='Disk-masers')
 
 plt.legend(['Non-masers', 'Masers', 'Mega-masers', 'Disk masers'])
 
@@ -354,46 +332,54 @@ plt.figure()
 fig, ax = plt.subplots(figsize = (10, 10))
 
 ax.hist(masses_nm_pr,
-        bins = np.linspace(masses_nm_pr.min(), masses_nm_pr.max(), num = num_bins_nm),
+        bins = np.linspace(masses_nm_pr.min(), masses_nm_pr.max(), num = num_bins, endpoint = False),
         color = "gray",
         edgecolor = 'white',
-        density = True,
+        density = False,
         alpha = 0.6,
         linewidth = 1,
-        label = 'non-masers'
+        label = 'non-masers',
+        weights=np.ones_like(masses_nm_pr) / len(masses_nm_pr)
            ) 
 ax.hist(masses_m_pr,
-        bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = num_bins_m),
+        bins = np.linspace(masses_m_pr.min(), masses_m_pr.max(), num = num_bins, endpoint = False),
         color = "blue",
         edgecolor = 'white',
-        density = True,
+        density = False,
         alpha = 0.6,
         linewidth = 1,
-        label = 'masers'
+        label = 'masers',
+        weights=np.ones_like(masses_m_pr) / len(masses_m_pr)
            )
 ax.hist(masses_mega_masers_pr,
-        bins = np.linspace(masses_mega_masers_pr.min(), masses_mega_masers_pr.max(), num = num_bins_mega),
+        bins = np.linspace(masses_mega_masers_pr.min(), masses_mega_masers_pr.max(), num = num_bins, endpoint = False),
         color = "green",
         edgecolor = 'white',
-        density = True,
+        density = False,
         alpha = 0.6,
         linewidth = 1,
-        label = 'mega-masers'
+        label = 'mega-masers',
+        weights=np.ones_like(masses_mega_masers_pr) / len(masses_mega_masers_pr)
            )
 ax.hist(masses_disk_masers_pr,
-        bins = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num = num_bins_disk),
+        bins = np.linspace(masses_disk_masers_pr.min(), masses_disk_masers_pr.max(), num = num_bins, endpoint = False),
         color = "purple",
         edgecolor = 'white',
-        density = True,
+        density = False,
         alpha = 0.6,
         linewidth = 1,
-        label = 'disk-masers'
+        label = 'disk-masers',
+        weights=np.ones_like(masses_disk_masers_pr) / len(masses_disk_masers_pr)
            )
+plt.scatter(masses_disk_masers_pr, np.zeros_like(masses_disk_masers_pr), color="purple", label='Disk-masers')
 
 plt.legend(['Non-masers', 'Masers', 'Mega-masers', 'Disk masers'])
 
 plt.xlabel('Mass')
+
+
 plt.show()
+
 
 #%% Values for slide show
 
